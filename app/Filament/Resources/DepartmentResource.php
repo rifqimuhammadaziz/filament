@@ -26,7 +26,8 @@ class DepartmentResource extends Resource
             ->schema(self::getFormFields());
     }
 
-    public static function getFormFields(): array {
+    public static function getFormFields(): array
+    {
         return [
             Forms\Components\TextInput::make('name')
                 ->required()
@@ -59,7 +60,8 @@ class DepartmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('active')
+                    ->boolean()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
