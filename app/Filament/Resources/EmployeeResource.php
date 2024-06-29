@@ -12,13 +12,12 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
-
+    protected static ?string $navigationLabel = 'Karyawan';
+    protected static ?string $navigationGroup = 'Employee Management';
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
