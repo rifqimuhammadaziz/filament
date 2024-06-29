@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\LeaveRequestStatus;
+use App\Enums\LeaveRequestType;
 use App\Filament\Resources\LeaveRequestResource\Pages;
 use App\Filament\Resources\LeaveRequestResource\RelationManagers;
 use App\Models\LeaveRequest;
@@ -24,21 +26,29 @@ class LeaveRequestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name')
-                    ->prefixIcon('heroicon-o-user')
+                Forms\Components\Fieldset::make('Employee')->schema([
+                    Forms\Components\Select::make('employee_id')
+                        ->relationship('employee', 'name')
+                        ->prefixIcon('heroicon-o-user')
+                        ->required(),
+                ]),
+                Forms\Components\Fieldset::make('Start Ending')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\DatePicker::make('start_date')
+                            ->required(),
+                        Forms\Components\DatePicker::make('end_date')
+                            ->required(),
+                    ]),
+                Forms\Components\Select::make('type')
+                    ->enum(LeaveRequestType::class)
+                    ->options(LeaveRequestType::class)
                     ->required(),
-                Forms\Components\DatePicker::make('start_date')
+                Forms\Components\Select::make('status')
+                    ->enum(LeaveRequestStatus::class)
+                    ->options(LeaveRequestStatus::class)
                     ->required(),
-                Forms\Components\DatePicker::make('end_date')
-                    ->required(),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('reason')
+                Forms\Components\MarkdownEditor::make('reason')
                     ->columnSpanFull(),
             ]);
     }

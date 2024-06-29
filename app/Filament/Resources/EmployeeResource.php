@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\EmployeeStatus;
 use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Models\Department;
 use App\Models\Employee;
 use Filament\Forms;
@@ -22,41 +21,47 @@ class EmployeeResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->prefixIcon('heroicon-o-user')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->prefixIcon('heroicon-o-envelope')
-                    ->maxLength(255),
-                Forms\Components\Select::make('department_id')
-                    ->label('Department Name')
-                    ->relationship('department', 'name') 
-                    ->options(Department::query()->whereActive(true)->get()->pluck('name', 'id'))   
-                    ->searchable()
-                    ->preload()
-                    ->editOptionForm(fn () => DepartmentResource::getFormFields())
-                    ->required(),
-                Forms\Components\Select::make('position_id')
-                    ->relationship('position', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm(fn () => PositionResource::getFormFields())
-                    ->required(),
-                Forms\Components\DatePicker::make('joined')
-                    ->prefixIcon('heroicon-o-calendar-days')
-                    ->native(false)
-                    ->default(now())
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->enum(EmployeeStatus::class)
-                    ->options(EmployeeStatus::class)
-                    ->required(),
-            ]);
+        return $form->schema([
+            Forms\Components\Section::make('Employee')
+                ->columns(2)
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->prefixIcon('heroicon-o-user')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->required()
+                        ->prefixIcon('heroicon-o-envelope')
+                        ->maxLength(255),
+                    Forms\Components\Group::make([
+                        Forms\Components\Select::make('department_id')
+                            ->label('Department Name')
+                            ->relationship('department', 'name')
+                            ->options(Department::query()->whereActive(true)->get()->pluck('name', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->editOptionForm(fn() => DepartmentResource::getFormFields())
+                            ->required(),
+                        Forms\Components\Select::make('position_id')
+                            ->relationship('position', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm(fn() => PositionResource::getFormFields())
+                            ->required(),
+
+                        Forms\Components\Select::make('status')
+                            ->enum(EmployeeStatus::class)
+                            ->options(EmployeeStatus::class)
+                            ->required(),
+                    ])->columns(3)->columnSpan(3),
+                    Forms\Components\DatePicker::make('joined')
+                        ->prefixIcon('heroicon-o-calendar-days')
+                        ->native(false)
+                        ->default(now())
+                        ->required(),
+                ])
+        ]);
     }
 
     public static function table(Table $table): Table
