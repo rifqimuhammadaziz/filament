@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\EmployeeStatus;
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Models\Employee;
@@ -34,20 +35,26 @@ class EmployeeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('department_id')
                     ->label('Department Name')
-                    ->prefixIcon('heroicon-o-home-modern')
+                    ->searchable()
+                    ->preload()
+                    ->editOptionForm(fn () => DepartmentResource::getFormFields())
                     ->relationship('department', 'name')
                     ->required(),
                 Forms\Components\Select::make('position_id')
                     ->relationship('position', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm(fn () => PositionResource::getFormFields())
                     ->required(),
                 Forms\Components\DatePicker::make('joined')
                     ->prefixIcon('heroicon-o-calendar-days')
                     ->native(false)
                     ->default(now())
                     ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->enum(EmployeeStatus::class)
+                    ->options(EmployeeStatus::class)
+                    ->required(),
             ]);
     }
 
