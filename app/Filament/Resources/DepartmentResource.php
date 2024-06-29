@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -33,6 +34,7 @@ class DepartmentResource extends Resource
             Forms\Components\Textarea::make('description')
                 ->maxLength(65535)
                 ->columnSpanFull(),
+            Forms\Components\Toggle::make('active')
         ];
     }
 
@@ -42,6 +44,11 @@ class DepartmentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\ToggleColumn::make('active'),
+                // Tables\Columns\TextColumn::make('active')
+                //     ->formatStateUsing(fn ($state) => $state === 1 ? 'Active' : 'Inactive')
+                //     ->badge()
+                //     ->color(fn ($state) => $state === 1 ? 'primary' : 'warning'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
