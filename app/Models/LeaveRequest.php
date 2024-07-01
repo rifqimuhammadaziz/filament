@@ -28,4 +28,16 @@ class LeaveRequest extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function approve(): void
+    {
+        $this->status = LeaveRequestStatus::APPROVED;
+        $this->save();
+    }
+
+    public function reject(): void
+    {
+        $this->status = LeaveRequestStatus::REJECTED;
+        $this->save();
+    }
 }
