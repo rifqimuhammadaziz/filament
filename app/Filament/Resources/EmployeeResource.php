@@ -10,6 +10,8 @@ use App\Models\Department;
 use App\Models\Employee;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -85,6 +87,7 @@ class EmployeeResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('joined')
                     ->date()
+                    ->formatStateUsing(fn($state) => $state->format('d F Y'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
@@ -107,6 +110,7 @@ class EmployeeResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])->color('gray'),
             ])
@@ -131,6 +135,31 @@ class EmployeeResource extends Resource
             'index' => Pages\ListEmployees::route('/'),
             'create' => Pages\CreateEmployee::route('/create'),
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
+            'view' => Pages\ViewEmployee::route('/{record}'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Infolists\Components\Section::make('Attributes')
+                ->columns(1)
+                ->schema([
+                    Infolists\Components\Group::make()
+                        ->columns(2)
+                        ->schema([
+                            Infolists\Components\TextEntry::make('name'),
+                            Infolists\Components\TextEntry::make('email'),
+                        ]),
+                    Infolists\Components\TextEntry::make('department.name'),
+                    Infolists\Components\TextEntry::make('position.name'),
+                    Infolists\Components\TextEntry::make('joined')
+                        ->date()
+                        ->formatStateUsing(fn($state) => $state->format('d F Y')),
+                    Infolists\Components\TextEntry::make('status')
+                        ->badge()
+                        ->color(fn($state) => $state->getColor()),
+                ]),
+        ]);
     }
 }
