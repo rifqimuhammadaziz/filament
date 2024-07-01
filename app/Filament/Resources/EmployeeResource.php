@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\EmployeeStatus;
 use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\LeaveRequestsRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
 use App\Models\Department;
 use App\Models\Employee;
 use Filament\Forms;
@@ -16,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
-    protected static ?string $navigationLabel = 'Karyawan';
+    // protected static ?string $navigationLabel = 'Karyawan';
     protected static ?string $navigationGroup = 'Employee Management';
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -118,7 +120,8 @@ class EmployeeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SalariesRelationManager::class,
+            LeaveRequestsRelationManager::class
         ];
     }
 

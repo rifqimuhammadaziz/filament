@@ -14,4 +14,13 @@ enum LeaveRequestStatus: string implements HasLabel
     {
         return str($this->value)->title();
     }
+
+    public function getColor(): ?string
+    {
+        return match ($this) {
+            self::PENDING => 'warning',
+            self::APPROVED => 'success',
+            self::REJECTED => 'danger',
+        };
+    }
 }
