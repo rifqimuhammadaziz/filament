@@ -26,6 +26,9 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('/')
+            ->brandName('Xenostech')
+            ->brandLogo(asset('logo/github-mark.svg'))
+            ->darkModeBrandLogo(asset('logo/github-mark-white.svg'))
             ->login()
             ->colors([
                 'primary' => Color::Blue,
@@ -35,7 +38,7 @@ class AppPanelProvider extends PanelProvider
                 'Employee Management',
                 'Resources'
             ])
-            ->darkMode(condition: true, isForced: true)
+            // ->darkMode(condition: true, isForced: true)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

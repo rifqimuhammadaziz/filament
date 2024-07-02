@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PositionResource extends Resource
 {
     use DefaultCounterNavigationBadge;
+    protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $model = Position::class;
     protected static ?string $navigationGroup = 'Resources';
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';

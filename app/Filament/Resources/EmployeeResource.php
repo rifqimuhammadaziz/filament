@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class EmployeeResource extends Resource
 {
+    protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $model = Employee::class;
     // protected static ?string $navigationLabel = 'Karyawan';
     protected static ?string $navigationGroup = 'Employee Management';
@@ -80,12 +81,12 @@ class EmployeeResource extends Resource
         return $table
             ->defaultSort('joined', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('department.name')
-                    ->description(fn($record) => $record->position->name)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->description(fn(Employee $employee) => $employee->email)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->description(fn($record) => $record->position->name)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('joined')
                     ->date()
                     ->formatStateUsing(fn($state) => $state->format('d F Y'))
