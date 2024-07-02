@@ -26,9 +26,14 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('/')
+            ->profile(isSimple: false)
+            // ->registration()
+            // ->passwordReset()
             ->brandName('Xenostech')
             ->brandLogo(asset('logo/github-mark.svg'))
             ->darkModeBrandLogo(asset('logo/github-mark-white.svg'))
+            ->brandLogoHeight('30px')
+            ->databaseNotifications()
             ->login()
             ->colors([
                 'primary' => Color::Blue,
@@ -46,7 +51,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
@@ -62,6 +67,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop();
     }
 }
