@@ -5,15 +5,19 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
 use App\Filament\Resources\SalaryResource\Pages;
 use App\Models\Salary;
+use App\Traits\DefaultCounterNavigationBadge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
 
 class SalaryResource extends Resource
 {
+    use DefaultCounterNavigationBadge;
     protected static ?string $model = Salary::class;
     protected static ?string $navigationGroup = 'Employee Management';
     protected static ?int $navigationSort = 2;
@@ -79,6 +83,9 @@ class SalaryResource extends Resource
             Tables\Columns\TextColumn::make('amount')
                 ->numeric()
                 ->prefix('Rp ')
+                ->summarize(
+                    Sum::make('amount')->money('IDR')
+                )
                 ->sortable(),
             Tables\Columns\TextColumn::make('effective_date')
                 ->date()

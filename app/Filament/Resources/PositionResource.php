@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PositionResource\Pages;
 use App\Filament\Resources\PositionResource\RelationManagers;
 use App\Models\Position;
+use App\Traits\DefaultCounterNavigationBadge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PositionResource extends Resource
 {
+    use DefaultCounterNavigationBadge;
     protected static ?string $model = Position::class;
     protected static ?string $navigationGroup = 'Resources';
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
@@ -25,7 +27,8 @@ class PositionResource extends Resource
             ->schema(self::getFormFields());
     }
 
-    public static function getFormFields(): array {
+    public static function getFormFields(): array
+    {
         return [
             Forms\Components\TextInput::make('name')
                 ->required()

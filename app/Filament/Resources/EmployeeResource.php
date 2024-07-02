@@ -8,6 +8,7 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\LeaveRequestsRelati
 use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Traits\DefaultCounterNavigationBadge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -161,5 +162,10 @@ class EmployeeResource extends Resource
                         ->color(fn($state) => $state->getColor()),
                 ]),
         ]);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status', EmployeeStatus::ACTIVE)->count();
     }
 }
